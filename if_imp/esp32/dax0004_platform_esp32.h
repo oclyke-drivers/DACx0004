@@ -31,7 +31,7 @@ typedef struct _dax_if_esp32_arg_t {
   uint32_t                clk_freq;
   int                     clk_pin;
   int                     mosi_pin;
-  // int                     miso_pin;
+  int                     miso_pin;
   int                     sync_pin;
   int                     ldac_pin;
   int                     clr_pin;
