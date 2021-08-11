@@ -44,6 +44,11 @@ dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax000
   pdev->_ver = ver;
   pdev->_arg = arg;
 
+  // Set up control pins
+  if(pdev->_if->set_clr  != NULL){ pdev->_if->set_clr(true, pdev->_arg); }
+  if(pdev->_if->set_ldac != NULL){ pdev->_if->set_ldac(false, pdev->_arg); }
+  if(pdev->_if->set_sync != NULL){ pdev->_if->set_sync(true, pdev->_arg); }
+
   return DAX0004_STAT_OK;
 }
 

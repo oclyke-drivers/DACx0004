@@ -102,13 +102,13 @@ typedef enum {
 // Type Definitions
 
 typedef struct _dax0004_if_t {
-  dax0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg);  // shift out len bytes from pdat array on the SCLK and SDIN (DAX0004 perspective) lines, use SYNC line to select the device
-  dax0004_status_e (*set_sync)  (bool lvl, void* arg);                    // set the level of the sync line (true for high, false for low)
-  dax0004_status_e (*set_ldac)  (bool lvl, void* arg);                    // set the level of the ldac line (true for high, false for low)
-  dax0004_status_e (*set_clr)   (bool lvl, void* arg);                    // set the level of the  clr line (true for high, false for low)
+  dax0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg); // required. shift out len bytes from pdat array on the SCLK and SDIN (DAX0004 perspective) lines, use SYNC line to select the device
+  dax0004_status_e (*set_sync)  (bool lvl, void* arg);                    // optional. set the level of the sync line (true for high, false for low) (only used at startup to deselect the device - after which the shift_sr function should handle the SYNC line)
+  dax0004_status_e (*set_ldac)  (bool lvl, void* arg);                    // optional. set the level of the ldac line (true for high, false for low) (if not implemented the SYNC line should be tied low)
+  dax0004_status_e (*set_clr)   (bool lvl, void* arg);                    // optional. set the level of the  clr line (true for high, false for low) (if not implemented the CLR line should be tied high)
 } dax0004_if_t;       // interface abstraction
 
-typedef struct _dax0004_handle_t {
+typedef struct _dax0004_dev_t {
   dax0004_ver_e _ver; // which version is this device
   dax0004_if_t* _if;  // the interface to use
   void*         _arg; // user assignable pointer to pass into if functions

@@ -27,7 +27,7 @@ dax0004_status_e set_clr_esp32(bool lvl, void* arg);
 
 dax0004_if_t dax_if_esp32 = {
   .shift_sr = shift_sr_esp32,
-  .set_sync = set_sync_esp32,
+  .set_sync = NULL,           // sync is handled by SPI master
   .set_ldac = set_ldac_esp32,
   .set_clr = set_clr_esp32,
 };
@@ -66,7 +66,6 @@ dax0004_status_e set_sync_esp32(bool lvl, void* arg){
   if(!sync_initialized){
     gpio_pad_select_gpio(if_args->sync_pin);
     gpio_set_direction(if_args->sync_pin, GPIO_MODE_OUTPUT);
-    gpio_set_level(if_args->sync_pin, 1);
     sync_initialized = true;
   }
   gpio_set_level(if_args->sync_pin, lvl);
@@ -80,7 +79,6 @@ dax0004_status_e set_ldac_esp32(bool lvl, void* arg){
   if(!ldac_initialized){
     gpio_pad_select_gpio(if_args->ldac_pin);
     gpio_set_direction(if_args->ldac_pin, GPIO_MODE_OUTPUT);
-    gpio_set_level(if_args->ldac_pin, 0);
     ldac_initialized = true;
   }
   gpio_set_level(if_args->ldac_pin, lvl);
@@ -94,7 +92,6 @@ dax0004_status_e set_clr_esp32(bool lvl, void* arg){
   if(!clr_initialized){
     gpio_pad_select_gpio(if_args->clr_pin);
     gpio_set_direction(if_args->clr_pin, GPIO_MODE_OUTPUT);
-    gpio_set_level(if_args->clr_pin, 1);
     clr_initialized = true;
   }
   gpio_set_level(if_args->clr_pin, lvl);

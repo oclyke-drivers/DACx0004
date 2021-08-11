@@ -39,6 +39,8 @@ typedef struct _dax_if_esp32_arg_t {
 
 extern dax0004_if_t dax_if_esp32;
 
+#endif // _DAX0004_PLATFORM_ESP32_H_
+
 // This header file provides an ESP32 implementation of the DAX interface
 // Example Usage:
 /*
@@ -109,5 +111,3 @@ void app_main(void)
 }
 
 */
-
-#endif // _DAX0004_PLATFORM_ESP32_H_
