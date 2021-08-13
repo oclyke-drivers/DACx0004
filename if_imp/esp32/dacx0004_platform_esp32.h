@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #ifndef _DACX0004_PLATFORM_ESP32_H_
 #define _DACX0004_PLATFORM_ESP32_H_
 
-#include "dax0004.h"
+#include "dacx0004.h"
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 
@@ -37,7 +37,7 @@ typedef struct _dax_if_esp32_arg_t {
   int                     clr_pin;
 } dax_if_esp32_arg_t;
 
-extern dax0004_if_t dax_if_esp32;
+extern dacx0004_if_t dax_if_esp32;
 
 #endif // _DACX0004_PLATFORM_ESP32_H_
 
@@ -49,7 +49,7 @@ extern dax0004_if_t dax_if_esp32;
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "dax0004_platform_esp32.h"
+#include "dacx0004_platform_esp32.h"
 
 #define PIN_NUM_MISO -1
 #define PIN_NUM_MOSI 23
@@ -65,7 +65,7 @@ extern dax0004_if_t dax_if_esp32;
 #define DMA_CHANNEL     1
 
 // Globals
-dax0004_dev_t         dax = {0};
+dacx0004_dev_t         dax = {0};
 dax_if_esp32_arg_t  if_args = {
     .spi = NULL,
     .host = HOST,
@@ -88,7 +88,7 @@ da80004_sr_t sr = {
 
 void app_main(void)
 {
-  dax0004_status_e dax_ret = DACX0004_STAT_OK;
+  dacx0004_status_e dax_ret = DACX0004_STAT_OK;
 
   // SPI bus init may depend on other devices so it is handled separately
   spi_bus_config_t buscfg={
@@ -102,8 +102,8 @@ void app_main(void)
   ESP_ERROR_CHECK(spi_bus_initialize(if_args.host, &buscfg, DMA_CHANNEL));
 
   // DAX operations
-  dax_ret = dax0004_init_dev(&dax, DA80004, &dax_if_esp32, &if_args);
-  dax_ret = dax0004_write_sr(&dax, sr);     // Writes the command to the DAX
+  dax_ret = dacx0004_init_dev(&dax, DA80004, &dax_if_esp32, &if_args);
+  dax_ret = dacx0004_write_sr(&dax, sr);     // Writes the command to the DAX
 
   while(1){
     vTaskDelay(200 / portTICK_PERIOD_MS);

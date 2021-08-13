@@ -17,7 +17,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "dax0004.h"
+#include "dacx0004.h"
 
 #define DACX0004_DAT0(sr) ((uint8_t)( ((sr.Rw & 0x01) << 4) | ((sr.cmd & 0x0F) << 0) ))
 
@@ -35,7 +35,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 
 
-dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax0004_if_t* pif, void* arg){
+dacx0004_status_e dacx0004_init_dev(dacx0004_dev_t* pdev, dacx0004_ver_e ver, dacx0004_if_t* pif, void* arg){
   if(pdev == NULL)          { return DACX0004_STAT_ERR_INVALID_ARG; }
   if(pif == NULL)           { return DACX0004_STAT_ERR_INVALID_ARG; }
   if(ver >= DACX0004_VER_NUM){ return DACX0004_STAT_ERR_UNKNOWN_VER; }
@@ -53,11 +53,11 @@ dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax000
 }
 
 
-dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr){
+dacx0004_status_e dacx0004_write_sr(dacx0004_dev_t* pdev, da80004_sr_t sr){
   if(pdev == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
   if(pdev->_if == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
 
-  dax0004_status_e retval = DACX0004_STAT_OK;
+  dacx0004_status_e retval = DACX0004_STAT_OK;
 
   const uint8_t len = 4;
   uint8_t dat[len];
@@ -89,7 +89,7 @@ dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr){
   return retval;
 }
 
-dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len){
+dacx0004_status_e dacx0004_format_sr(dacx0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len){
   if(pdev == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
   if(dest == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
 

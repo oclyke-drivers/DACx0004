@@ -34,14 +34,14 @@ typedef enum {
   DACX0004_STAT_ERR_UNKNOWN_VER,
 
   DACX0004_STAT_NUM          // total number of status indicators
-} dax0004_status_e; // status indicators
+} dacx0004_status_e; // status indicators
 
 typedef enum {
   DACX0004_RW_WRITE = 0x00,
   DACX0004_RW_READ = 0x01,
 
   DACX0004_RW_NUM
-} dax0004_rw_e;
+} dacx0004_rw_e;
 
 typedef enum {
     DACX0004_ADD_A = 0x00,
@@ -50,7 +50,7 @@ typedef enum {
     DACX0004_ADD_ALL = 0x0F,
 
     DACX0004_ADD_NUM
-} dax0004_add_e;
+} dacx0004_add_e;
 
 typedef enum {
     DACX0004_PWR_UP = 0x00,          // power up selected channels (normal operation)
@@ -59,7 +59,7 @@ typedef enum {
     DACX0004_PWR_HI_Z,               // power down - HI-Z
 
     DACX0004_PWR_NUM
-} dax0004_pwr_e;
+} dacx0004_pwr_e;
 
 typedef enum {
     DACX0004_CLM_ZERO = 0x00,        // clear to zero scale
@@ -67,7 +67,7 @@ typedef enum {
     DACX0004_CLM_FULL,               // clear to full scale
 
     DACX0004_CLM_NUM
-} dax0004_clm_e;
+} dacx0004_clm_e;
 
 typedef enum {
     DACX0004_CMD_WRITEn = 0x00,
@@ -88,7 +88,7 @@ typedef enum {
     _res2_,                         // reserved
 
     DACX0004_CMD_NUM
-} dax0004_cmd_e;  // possible values for the sr cmd field
+} dacx0004_cmd_e;  // possible values for the sr cmd field
 
 typedef enum {
   DA80004 = 0x00,
@@ -96,23 +96,23 @@ typedef enum {
   DA60004,
 
   DACX0004_VER_NUM
-} dax0004_ver_e;  // possible versions of the dax0004        
+} dacx0004_ver_e;  // possible versions of the dacx0004        
 
 //
 // Type Definitions
 
-typedef struct _dax0004_if_t {
-  dax0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg); // required. shift out len bytes from pdat array on the SCLK and SDIN (DACX0004 perspective) lines, use SYNC line to select the device
-  dax0004_status_e (*set_sync)  (bool lvl, void* arg);                    // optional. set the level of the sync line (true for high, false for low) (only used at startup to deselect the device - after which the shift_sr function should handle the SYNC line)
-  dax0004_status_e (*set_ldac)  (bool lvl, void* arg);                    // optional. set the level of the ldac line (true for high, false for low) (if not implemented the SYNC line should be tied low)
-  dax0004_status_e (*set_clr)   (bool lvl, void* arg);                    // optional. set the level of the  clr line (true for high, false for low) (if not implemented the CLR line should be tied high)
-} dax0004_if_t;       // interface abstraction
+typedef struct _dacx0004_if_t {
+  dacx0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg); // required. shift out len bytes from pdat array on the SCLK and SDIN (DACX0004 perspective) lines, use SYNC line to select the device
+  dacx0004_status_e (*set_sync)  (bool lvl, void* arg);                    // optional. set the level of the sync line (true for high, false for low) (only used at startup to deselect the device - after which the shift_sr function should handle the SYNC line)
+  dacx0004_status_e (*set_ldac)  (bool lvl, void* arg);                    // optional. set the level of the ldac line (true for high, false for low) (if not implemented the SYNC line should be tied low)
+  dacx0004_status_e (*set_clr)   (bool lvl, void* arg);                    // optional. set the level of the  clr line (true for high, false for low) (if not implemented the CLR line should be tied high)
+} dacx0004_if_t;       // interface abstraction
 
-typedef struct _dax0004_dev_t {
-  dax0004_ver_e _ver; // which version is this device
-  dax0004_if_t* _if;  // the interface to use
+typedef struct _dacx0004_dev_t {
+  dacx0004_ver_e _ver; // which version is this device
+  dacx0004_if_t* _if;  // the interface to use
   void*         _arg; // user assignable pointer to pass into if functions
-} dax0004_dev_t;      // device handle
+} dacx0004_dev_t;      // device handle
 
 typedef struct {
   uint8_t     _dc :  3;   // d31-d29  : 3 dont care bits 
@@ -123,8 +123,8 @@ typedef struct {
   uint8_t     mod :  4;   // d3-d0    : mode
 }da80004_sr_t;          // command shift register map
 
-dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax0004_if_t* pif, void* arg);
-dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr);  
-dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len);    // fills a buffer 'dest' with the 4-byte sr representation for len bytes. sr will be truncated and repeated as necessary
+dacx0004_status_e dacx0004_init_dev(dacx0004_dev_t* pdev, dacx0004_ver_e ver, dacx0004_if_t* pif, void* arg);
+dacx0004_status_e dacx0004_write_sr(dacx0004_dev_t* pdev, da80004_sr_t sr);  
+dacx0004_status_e dacx0004_format_sr(dacx0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len);    // fills a buffer 'dest' with the 4-byte sr representation for len bytes. sr will be truncated and repeated as necessary
 
 #endif // _DACX0004_H_
