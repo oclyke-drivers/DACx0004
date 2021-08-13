@@ -91,7 +91,7 @@ typedef enum {
 } dacx0004_cmd_e;  // possible values for the sr cmd field
 
 typedef enum {
-  DA80004 = 0x00,
+  DAC80004 = 0x00,
   DAC70004,
   DAC60004,
 
