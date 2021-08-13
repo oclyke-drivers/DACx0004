@@ -21,17 +21,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 #define DACX0004_DAT0(sr) ((uint8_t)( ((sr.Rw & 0x01) << 4) | ((sr.cmd & 0x0F) << 0) ))
 
-#define DA80004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0xF000) >> 12) ))
-#define DA70004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0x3C00) >> 10) ))
-#define DA60004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0x0F00) >> 8) ))
+#define DAC80004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0xF000) >> 12) ))
+#define DAC70004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0x3C00) >> 10) ))
+#define DAC60004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0x0F00) >> 8) ))
 
-#define DA80004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x0FF0) >> 4) ))
-#define DA70004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x03FC) >> 2) ))
-#define DA60004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x00FF) >> 0) ))
+#define DAC80004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x0FF0) >> 4) ))
+#define DAC70004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x03FC) >> 2) ))
+#define DAC60004_DAT2(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x00FF) >> 0) ))
 
-#define DA80004_DAT3(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x000F) << 4) | ((sr.mod & 0x0F) << 0) ))
-#define DA70004_DAT3(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x0003) << 4) | ((sr.mod & 0x0F) << 0) ))
-#define DA60004_DAT3(sr) ((uint8_t)( (        ( 0x00 << 0)              | ((sr.mod & 0x0F) << 0) )))
+#define DAC80004_DAT3(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x000F) << 4) | ((sr.mod & 0x0F) << 0) ))
+#define DAC70004_DAT3(sr) ((uint8_t)( (((uint16_t)sr.dat & 0x0003) << 4) | ((sr.mod & 0x0F) << 0) ))
+#define DAC60004_DAT3(sr) ((uint8_t)( (        ( 0x00 << 0)              | ((sr.mod & 0x0F) << 0) )))
 
 
 
@@ -64,20 +64,20 @@ dacx0004_status_e dacx0004_write_sr(dacx0004_dev_t* pdev, da80004_sr_t sr){
 
   dat[0] = DACX0004_DAT0(sr);
   switch(pdev->_ver){
-    case DA80004 :
-      dat[1] = DA80004_DAT1(sr);
-      dat[2] = DA80004_DAT2(sr);
-      dat[3] = DA80004_DAT3(sr);
+    case DAC80004 :
+      dat[1] = DAC80004_DAT1(sr);
+      dat[2] = DAC80004_DAT2(sr);
+      dat[3] = DAC80004_DAT3(sr);
       break;
-    case DA70004 :
-      dat[1] = DA70004_DAT1(sr);
-      dat[2] = DA70004_DAT2(sr);
-      dat[3] = DA70004_DAT3(sr);
+    case DAC70004 :
+      dat[1] = DAC70004_DAT1(sr);
+      dat[2] = DAC70004_DAT2(sr);
+      dat[3] = DAC70004_DAT3(sr);
       break;
-    case DA60004 :
-      dat[1] = DA60004_DAT1(sr);
-      dat[2] = DA60004_DAT2(sr);
-      dat[3] = DA60004_DAT3(sr);
+    case DAC60004 :
+      dat[1] = DAC60004_DAT1(sr);
+      dat[2] = DAC60004_DAT2(sr);
+      dat[3] = DAC60004_DAT3(sr);
       break;
     default :
       return DACX0004_STAT_ERR_UNKNOWN_VER;
@@ -99,20 +99,20 @@ dacx0004_status_e dacx0004_format_sr(dacx0004_dev_t* pdev, da80004_sr_t sr, uint
   uint8_t remainder = len%4;
 
   switch(pdev->_ver){
-    case DA80004 :
-      d1 = DA80004_DAT1(sr);
-      d2 = DA80004_DAT2(sr);
-      d3 = DA80004_DAT3(sr);
+    case DAC80004 :
+      d1 = DAC80004_DAT1(sr);
+      d2 = DAC80004_DAT2(sr);
+      d3 = DAC80004_DAT3(sr);
       break;
-    case DA70004 :
-      d1 = DA70004_DAT1(sr);
-      d2 = DA70004_DAT2(sr);
-      d3 = DA70004_DAT3(sr);
+    case DAC70004 :
+      d1 = DAC70004_DAT1(sr);
+      d2 = DAC70004_DAT2(sr);
+      d3 = DAC70004_DAT3(sr);
       break;
-    case DA60004 :
-      d1 = DA60004_DAT1(sr);
-      d2 = DA60004_DAT2(sr);
-      d3 = DA60004_DAT3(sr);
+    case DAC60004 :
+      d1 = DAC60004_DAT1(sr);
+      d2 = DAC60004_DAT2(sr);
+      d3 = DAC60004_DAT3(sr);
       break;
     default :
       return DACX0004_STAT_ERR_UNKNOWN_VER;

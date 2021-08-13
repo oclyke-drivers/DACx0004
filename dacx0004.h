@@ -92,8 +92,8 @@ typedef enum {
 
 typedef enum {
   DA80004 = 0x00,
-  DA70004,
-  DA60004,
+  DAC70004,
+  DAC60004,
 
   DACX0004_VER_NUM
 } dacx0004_ver_e;  // possible versions of the dacx0004        

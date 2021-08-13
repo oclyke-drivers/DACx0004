@@ -59,7 +59,7 @@ extern dacx0004_if_t dax_if_esp32;
 #define PIN_NUM_CLR 25
 
 #define HOST            VSPI_HOST
-#define CLOCK_FREQ      40000000    // 50 MHz max for DA80004
+#define CLOCK_FREQ      40000000    // 50 MHz max for DAC80004
 #define MAX_XFER_SIZE   0           // defaults to 4096 if set to 0
 #define MAX_Q_SIZE      1
 #define DMA_CHANNEL     1
@@ -102,7 +102,7 @@ void app_main(void)
   ESP_ERROR_CHECK(spi_bus_initialize(if_args.host, &buscfg, DMA_CHANNEL));
 
   // DAX operations
-  dax_ret = dacx0004_init_dev(&dax, DA80004, &dax_if_esp32, &if_args);
+  dax_ret = dacx0004_init_dev(&dax, DAC80004, &dax_if_esp32, &if_args);
   dax_ret = dacx0004_write_sr(&dax, sr);     // Writes the command to the DAX
 
   while(1){
