@@ -20,19 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #include "dacx0004_platform_esp32.h"
 
 // ESP32-specific interface functions for the DACX0004
-dacx0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg);
-dacx0004_status_e set_sync_esp32(bool lvl, void* arg);
-dacx0004_status_e set_ldac_esp32(bool lvl, void* arg);
-dacx0004_status_e set_clr_esp32(bool lvl, void* arg);
+dacx0004_status_e dacx0004_esp32_shift_sr(uint8_t* pdat, uint32_t len, void* arg);
+dacx0004_status_e dacx0004_esp32_set_sync(bool lvl, void* arg);
+dacx0004_status_e dacx0004_esp32_set_ldac(bool lvl, void* arg);
+dacx0004_status_e dacx0004_esp32_set_clr(bool lvl, void* arg);
 
 dacx0004_if_t dax_if_esp32 = {
-  .shift_sr = shift_sr_esp32,
-  .set_sync = NULL,           // sync is handled by SPI master
-  .set_ldac = set_ldac_esp32,
-  .set_clr = set_clr_esp32,
+  .shift_sr = dacx0004_esp32_shift_sr,
+  .set_sync = NULL,                     // sync is handled by SPI master
+  .set_ldac = dacx0004_esp32_set_ldac,
+  .set_clr = dacx0004_esp32_set_clr,
 };
 
-dacx0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg){
+dacx0004_status_e dacx0004_esp32_shift_sr(uint8_t* pdat, uint32_t len, void* arg){
   //if(arg == NULL){ return DACX0004_STAT_ERR; }
   static bool sr_initialized = false;
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
@@ -59,7 +59,7 @@ dacx0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg){
   return (ret == ESP_OK) ? DACX0004_STAT_OK : DACX0004_STAT_ERR;
 }
 
-dacx0004_status_e set_sync_esp32(bool lvl, void* arg){
+dacx0004_status_e dacx0004_esp32_set_sync(bool lvl, void* arg){
   // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool sync_initialized = false;
@@ -72,7 +72,7 @@ dacx0004_status_e set_sync_esp32(bool lvl, void* arg){
   return DACX0004_STAT_OK;
 }
 
-dacx0004_status_e set_ldac_esp32(bool lvl, void* arg){
+dacx0004_status_e dacx0004_esp32_set_ldac(bool lvl, void* arg){
   // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool ldac_initialized = false;
@@ -85,7 +85,7 @@ dacx0004_status_e set_ldac_esp32(bool lvl, void* arg){
   return DACX0004_STAT_OK;
 }
 
-dacx0004_status_e set_clr_esp32(bool lvl, void* arg){
+dacx0004_status_e dacx0004_esp32_set_clr(bool lvl, void* arg){
   // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool clr_initialized = false;
