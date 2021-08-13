@@ -17,8 +17,8 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef _DAX0004_PLATFORM_ESP32_H_
-#define _DAX0004_PLATFORM_ESP32_H_
+#ifndef _DACX0004_PLATFORM_ESP32_H_
+#define _DACX0004_PLATFORM_ESP32_H_
 
 #include "dax0004.h"
 #include "driver/spi_master.h"
@@ -39,7 +39,7 @@ typedef struct _dax_if_esp32_arg_t {
 
 extern dax0004_if_t dax_if_esp32;
 
-#endif // _DAX0004_PLATFORM_ESP32_H_
+#endif // _DACX0004_PLATFORM_ESP32_H_
 
 // This header file provides an ESP32 implementation of the DAX interface
 // Example Usage:
@@ -79,16 +79,16 @@ dax_if_esp32_arg_t  if_args = {
     .clk_freq = CLOCK_FREQ,
 };
 da80004_sr_t sr = {
-    .Rw = DAX0004_RW_WRITE,
-    .cmd = DAX0004_CMD_WRITEn_UPDATEn,
-    .add = DAX0004_ADD_A,
+    .Rw = DACX0004_RW_WRITE,
+    .cmd = DACX0004_CMD_WRITEn_UPDATEn,
+    .add = DACX0004_ADD_A,
     .dat = 0xDEAD,
     // .mod = 0,
 };
 
 void app_main(void)
 {
-  dax0004_status_e dax_ret = DAX0004_STAT_OK;
+  dax0004_status_e dax_ret = DACX0004_STAT_OK;
 
   // SPI bus init may depend on other devices so it is handled separately
   spi_bus_config_t buscfg={

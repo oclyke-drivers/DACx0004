@@ -17,8 +17,8 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef _DAX0004_H_
-#define _DAX0004_H_
+#ifndef _DACX0004_H_
+#define _DACX0004_H_
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -28,66 +28,66 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 // Enumerations
 
 typedef enum {
-  DAX0004_STAT_OK = 0x00,       // nominal operation
-  DAX0004_STAT_ERR,             // general error
-  DAX0004_STAT_ERR_INVALID_ARG,
-  DAX0004_STAT_ERR_UNKNOWN_VER,
+  DACX0004_STAT_OK = 0x00,       // nominal operation
+  DACX0004_STAT_ERR,             // general error
+  DACX0004_STAT_ERR_INVALID_ARG,
+  DACX0004_STAT_ERR_UNKNOWN_VER,
 
-  DAX0004_STAT_NUM          // total number of status indicators
+  DACX0004_STAT_NUM          // total number of status indicators
 } dax0004_status_e; // status indicators
 
 typedef enum {
-  DAX0004_RW_WRITE = 0x00,
-  DAX0004_RW_READ = 0x01,
+  DACX0004_RW_WRITE = 0x00,
+  DACX0004_RW_READ = 0x01,
 
-  DAX0004_RW_NUM
+  DACX0004_RW_NUM
 } dax0004_rw_e;
 
 typedef enum {
-    DAX0004_ADD_A = 0x00,
-    DAX0004_ADD_B,
-    DAX0004_ADD_C,
-    DAX0004_ADD_ALL = 0x0F,
+    DACX0004_ADD_A = 0x00,
+    DACX0004_ADD_B,
+    DACX0004_ADD_C,
+    DACX0004_ADD_ALL = 0x0F,
 
-    DAX0004_ADD_NUM
+    DACX0004_ADD_NUM
 } dax0004_add_e;
 
 typedef enum {
-    DAX0004_PWR_UP = 0x00,          // power up selected channels (normal operation)
-    DAX0004_PWR_1k_GND,             // power down - 1k ohm to GND
-    DAX0004_PWR_100k_GND,           // power down - 100 k ohm to GND
-    DAX0004_PWR_HI_Z,               // power down - HI-Z
+    DACX0004_PWR_UP = 0x00,          // power up selected channels (normal operation)
+    DACX0004_PWR_1k_GND,             // power down - 1k ohm to GND
+    DACX0004_PWR_100k_GND,           // power down - 100 k ohm to GND
+    DACX0004_PWR_HI_Z,               // power down - HI-Z
 
-    DAX0004_PWR_NUM
+    DACX0004_PWR_NUM
 } dax0004_pwr_e;
 
 typedef enum {
-    DAX0004_CLM_ZERO = 0x00,        // clear to zero scale
-    DAX0004_CLM_MID,                // clear to mid scale
-    DAX0004_CLM_FULL,               // clear to full scale
+    DACX0004_CLM_ZERO = 0x00,        // clear to zero scale
+    DACX0004_CLM_MID,                // clear to mid scale
+    DACX0004_CLM_FULL,               // clear to full scale
 
-    DAX0004_CLM_NUM
+    DACX0004_CLM_NUM
 } dax0004_clm_e;
 
 typedef enum {
-    DAX0004_CMD_WRITEn = 0x00,
-    DAX0004_CMD_UPDATEn,
-    DAX0004_CMD_WRITEn_UPDATEa,      // software LDAC
-    DAX0004_CMD_WRITEn_UPDATEn,      // write to buffer n and update DAC n
-    DAX0004_CMD_PWRnc,               // power up/down DAC n (mode field specifies channel?)
-    DAX0004_CMD_CLEAR_MODE_REG,      // clear mode register, CM0 and CM1 are used to determine what happens when DACs cleared
-    DAX0004_CMD_LDAC_REGc,           // LDAC register ?
-    DAX0004_CMD_SOFTWARE_RESET,      //
-    DAX0004_CMD_DISABLE_SDO_REG,     //
+    DACX0004_CMD_WRITEn = 0x00,
+    DACX0004_CMD_UPDATEn,
+    DACX0004_CMD_WRITEn_UPDATEa,      // software LDAC
+    DACX0004_CMD_WRITEn_UPDATEn,      // write to buffer n and update DAC n
+    DACX0004_CMD_PWRnc,               // power up/down DAC n (mode field specifies channel?)
+    DACX0004_CMD_CLEAR_MODE_REG,      // clear mode register, CM0 and CM1 are used to determine what happens when DACs cleared
+    DACX0004_CMD_LDAC_REGc,           // LDAC register ?
+    DACX0004_CMD_SOFTWARE_RESET,      //
+    DACX0004_CMD_DISABLE_SDO_REG,     //
     _res0_,                         // reserved
-    DAX0004_CMD_SHRT_CIRC_LIM_REGc,  // 
-    DAX0004_CMD_SOFTWARE_CLEAR,      //
+    DACX0004_CMD_SHRT_CIRC_LIM_REGc,  // 
+    DACX0004_CMD_SOFTWARE_CLEAR,      //
     _res1_,                         // reserved
-    DAX0004_CMD_STATUS_REG,          // read status register
-    DAX0004_CMD_NOP,                 // NOP
+    DACX0004_CMD_STATUS_REG,          // read status register
+    DACX0004_CMD_NOP,                 // NOP
     _res2_,                         // reserved
 
-    DAX0004_CMD_NUM
+    DACX0004_CMD_NUM
 } dax0004_cmd_e;  // possible values for the sr cmd field
 
 typedef enum {
@@ -95,14 +95,14 @@ typedef enum {
   DA70004,
   DA60004,
 
-  DAX0004_VER_NUM
+  DACX0004_VER_NUM
 } dax0004_ver_e;  // possible versions of the dax0004        
 
 //
 // Type Definitions
 
 typedef struct _dax0004_if_t {
-  dax0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg); // required. shift out len bytes from pdat array on the SCLK and SDIN (DAX0004 perspective) lines, use SYNC line to select the device
+  dax0004_status_e (*shift_sr)  (uint8_t* pdat, uint32_t len, void* arg); // required. shift out len bytes from pdat array on the SCLK and SDIN (DACX0004 perspective) lines, use SYNC line to select the device
   dax0004_status_e (*set_sync)  (bool lvl, void* arg);                    // optional. set the level of the sync line (true for high, false for low) (only used at startup to deselect the device - after which the shift_sr function should handle the SYNC line)
   dax0004_status_e (*set_ldac)  (bool lvl, void* arg);                    // optional. set the level of the ldac line (true for high, false for low) (if not implemented the SYNC line should be tied low)
   dax0004_status_e (*set_clr)   (bool lvl, void* arg);                    // optional. set the level of the  clr line (true for high, false for low) (if not implemented the CLR line should be tied high)
@@ -127,4 +127,4 @@ dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax000
 dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr);  
 dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len);    // fills a buffer 'dest' with the 4-byte sr representation for len bytes. sr will be truncated and repeated as necessary
 
-#endif // _DAX0004_H_
+#endif // _DACX0004_H_

@@ -19,7 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 #include "dax0004.h"
 
-#define DAX0004_DAT0(sr) ((uint8_t)( ((sr.Rw & 0x01) << 4) | ((sr.cmd & 0x0F) << 0) ))
+#define DACX0004_DAT0(sr) ((uint8_t)( ((sr.Rw & 0x01) << 4) | ((sr.cmd & 0x0F) << 0) ))
 
 #define DA80004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0xF000) >> 12) ))
 #define DA70004_DAT1(sr) ((uint8_t)( ((sr.add & 0x0F) << 4) | (((uint16_t)sr.dat & 0x3C00) >> 10) ))
@@ -36,9 +36,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 
 dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax0004_if_t* pif, void* arg){
-  if(pdev == NULL)          { return DAX0004_STAT_ERR_INVALID_ARG; }
-  if(pif == NULL)           { return DAX0004_STAT_ERR_INVALID_ARG; }
-  if(ver >= DAX0004_VER_NUM){ return DAX0004_STAT_ERR_UNKNOWN_VER; }
+  if(pdev == NULL)          { return DACX0004_STAT_ERR_INVALID_ARG; }
+  if(pif == NULL)           { return DACX0004_STAT_ERR_INVALID_ARG; }
+  if(ver >= DACX0004_VER_NUM){ return DACX0004_STAT_ERR_UNKNOWN_VER; }
 
   pdev->_if = pif;
   pdev->_ver = ver;
@@ -49,20 +49,20 @@ dax0004_status_e dax0004_init_dev(dax0004_dev_t* pdev, dax0004_ver_e ver, dax000
   if(pdev->_if->set_ldac != NULL){ pdev->_if->set_ldac(false, pdev->_arg); }
   if(pdev->_if->set_sync != NULL){ pdev->_if->set_sync(true, pdev->_arg); }
 
-  return DAX0004_STAT_OK;
+  return DACX0004_STAT_OK;
 }
 
 
 dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr){
-  if(pdev == NULL){ return DAX0004_STAT_ERR_INVALID_ARG; }
-  if(pdev->_if == NULL){ return DAX0004_STAT_ERR_INVALID_ARG; }
+  if(pdev == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
+  if(pdev->_if == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
 
-  dax0004_status_e retval = DAX0004_STAT_OK;
+  dax0004_status_e retval = DACX0004_STAT_OK;
 
   const uint8_t len = 4;
   uint8_t dat[len];
 
-  dat[0] = DAX0004_DAT0(sr);
+  dat[0] = DACX0004_DAT0(sr);
   switch(pdev->_ver){
     case DA80004 :
       dat[1] = DA80004_DAT1(sr);
@@ -80,7 +80,7 @@ dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr){
       dat[3] = DA60004_DAT3(sr);
       break;
     default :
-      return DAX0004_STAT_ERR_UNKNOWN_VER;
+      return DACX0004_STAT_ERR_UNKNOWN_VER;
       break;
   }
 
@@ -90,10 +90,10 @@ dax0004_status_e dax0004_write_sr(dax0004_dev_t* pdev, da80004_sr_t sr){
 }
 
 dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t* dest, uint32_t len){
-  if(pdev == NULL){ return DAX0004_STAT_ERR_INVALID_ARG; }
-  if(dest == NULL){ return DAX0004_STAT_ERR_INVALID_ARG; }
+  if(pdev == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
+  if(dest == NULL){ return DACX0004_STAT_ERR_INVALID_ARG; }
 
-  uint8_t d0 = DAX0004_DAT0(sr);
+  uint8_t d0 = DACX0004_DAT0(sr);
   uint8_t d1, d2, d3;
   uint32_t full_packs = 0;
   uint8_t remainder = len%4;
@@ -115,7 +115,7 @@ dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t
       d3 = DA60004_DAT3(sr);
       break;
     default :
-      return DAX0004_STAT_ERR_UNKNOWN_VER;
+      return DACX0004_STAT_ERR_UNKNOWN_VER;
       break;
   }
 
@@ -137,5 +137,5 @@ dax0004_status_e dax0004_format_sr(dax0004_dev_t* pdev, da80004_sr_t sr, uint8_t
       break;
   }
 
-  return DAX0004_STAT_OK;
+  return DACX0004_STAT_OK;
 }

@@ -19,7 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 #include "dax0004_platform_esp32.h"
 
-// ESP32-specific interface functions for the DAX0004
+// ESP32-specific interface functions for the DACX0004
 dax0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg);
 dax0004_status_e set_sync_esp32(bool lvl, void* arg);
 dax0004_status_e set_ldac_esp32(bool lvl, void* arg);
@@ -33,11 +33,11 @@ dax0004_if_t dax_if_esp32 = {
 };
 
 dax0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg){
-  //if(arg == NULL){ return DAX0004_STAT_ERR; }
+  //if(arg == NULL){ return DACX0004_STAT_ERR; }
   static bool sr_initialized = false;
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   esp_err_t ret = ESP_OK;
-  const uint8_t xfer_size = 4;    // DAX0004 requires 32-bit transfers
+  const uint8_t xfer_size = 4;    // DACX0004 requires 32-bit transfers
   spi_transaction_t trans = {     // Configure common transaction settings (also ensures that the transfer is zero-initialized in other entries)
     .length = xfer_size*8,      
   };
@@ -56,11 +56,11 @@ dax0004_status_e shift_sr_esp32(uint8_t* pdat, uint32_t len, void* arg){
     ret |= spi_device_queue_trans(if_args->spi, &trans, portMAX_DELAY);     // queue all transactions
   }
 
-  return (ret == ESP_OK) ? DAX0004_STAT_OK : DAX0004_STAT_ERR;
+  return (ret == ESP_OK) ? DACX0004_STAT_OK : DACX0004_STAT_ERR;
 }
 
 dax0004_status_e set_sync_esp32(bool lvl, void* arg){
-  // if(arg == NULL){ return DAX0004_STAT_ERR; }
+  // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool sync_initialized = false;
   if(!sync_initialized){
@@ -69,11 +69,11 @@ dax0004_status_e set_sync_esp32(bool lvl, void* arg){
     sync_initialized = true;
   }
   gpio_set_level(if_args->sync_pin, lvl);
-  return DAX0004_STAT_OK;
+  return DACX0004_STAT_OK;
 }
 
 dax0004_status_e set_ldac_esp32(bool lvl, void* arg){
-  // if(arg == NULL){ return DAX0004_STAT_ERR; }
+  // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool ldac_initialized = false;
   if(!ldac_initialized){
@@ -82,11 +82,11 @@ dax0004_status_e set_ldac_esp32(bool lvl, void* arg){
     ldac_initialized = true;
   }
   gpio_set_level(if_args->ldac_pin, lvl);
-  return DAX0004_STAT_OK;
+  return DACX0004_STAT_OK;
 }
 
 dax0004_status_e set_clr_esp32(bool lvl, void* arg){
-  // if(arg == NULL){ return DAX0004_STAT_ERR; }
+  // if(arg == NULL){ return DACX0004_STAT_ERR; }
   dax_if_esp32_arg_t* if_args = (dax_if_esp32_arg_t*)arg;
   static bool clr_initialized = false;
   if(!clr_initialized){
@@ -95,5 +95,5 @@ dax0004_status_e set_clr_esp32(bool lvl, void* arg){
     clr_initialized = true;
   }
   gpio_set_level(if_args->clr_pin, lvl);
-  return DAX0004_STAT_OK;
+  return DACX0004_STAT_OK;
 }
